@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +35,14 @@ public class ProductRepository {
         parameters.put("updated_at", LocalDateTime.now());
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
+    }
+
+    public void updateProduct(final Long id, final BigDecimal updatePrice) {
+        int updateProductCount = jdbcTemplate.update("update product set price = ? where id = ?", updatePrice, id);
+
+        if (updateProductCount == 0) {
+            throw new ProductException(ProductExceptionCode.PRODUCT_NOT_FOUND);
+        }
     }
 
     public void deleteProduct(final Long id) {

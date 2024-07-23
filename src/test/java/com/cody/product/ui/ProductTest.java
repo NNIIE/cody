@@ -4,6 +4,7 @@ import com.cody.common.utils.JsonUtil;
 import com.cody.product.domain.ProductCategory;
 import com.cody.product.fixture.ProductFixture;
 import com.cody.product.ui.request.ProductCreateRequest;
+import com.cody.product.ui.request.ProductUpdateRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -59,6 +59,34 @@ class ProductTest {
 
         mockMvc.perform(delete("/product/{id}", id)
                         .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("상품 변경 테스트 - 성공 케이스")
+    void updateProductSuccessTest() throws Exception {
+        Long id = 1L;
+        ProductUpdateRequest productUpdateRequest = ProductFixture.productUpdateRequest(BigDecimal.valueOf(100000));
+        String request = JsonUtil.objectToJson(productUpdateRequest);
+
+        mockMvc.perform(patch("/product/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
+                .andExpect(status().isOk())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("상품 변경 테스트 - 실패 케이스")
+    void updateProductFailTest() throws Exception {
+        Long id = 1000L;
+        ProductUpdateRequest productUpdateRequest = ProductFixture.productUpdateRequest(BigDecimal.valueOf(100000));
+        String request = JsonUtil.objectToJson(productUpdateRequest);
+
+        mockMvc.perform(patch("/product/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(request))
                 .andExpect(status().isBadRequest())
                 .andDo(print());
     }

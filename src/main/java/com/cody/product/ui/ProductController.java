@@ -4,6 +4,7 @@ import com.cody.product.application.ProductService;
 import com.cody.product.domain.entity.Product;
 import com.cody.product.infra.ProductMapper;
 import com.cody.product.ui.request.ProductCreateRequest;
+import com.cody.product.ui.request.ProductUpdateRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
@@ -26,6 +27,16 @@ public class ProductController {
     public void createProduct(@RequestBody @Valid final ProductCreateRequest request) {
         final Product product = productMapper.product(request);
         productService.createProduct(product);
+    }
+
+    @PatchMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "상품 수정")
+    public void updateProduct(
+            @PathVariable final Long id,
+            @RequestBody @Valid final ProductUpdateRequest request
+    ) {
+        productService.updateProduct(id, request.getPrice());
     }
 
     @DeleteMapping("/{id}")
