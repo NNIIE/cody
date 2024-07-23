@@ -2,9 +2,13 @@ package com.cody.product.ui;
 
 import com.cody.common.utils.JsonUtil;
 import com.cody.product.domain.ProductCategory;
+import com.cody.product.domain.entity.Product;
 import com.cody.product.fixture.ProductFixture;
 import com.cody.product.ui.request.ProductCreateRequest;
 import com.cody.product.ui.request.ProductUpdateRequest;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,10 +16,13 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
+import static org.assertj.core.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,6 +34,41 @@ class ProductTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
+
+    @Test
+    @DisplayName("브랜드 별 상품 조회 테스트")
+    void getProductsByBrandTest() throws Exception {
+        String brand = "A";
+
+        MvcResult response = mockMvc.perform(get("/product/{brand}", brand)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        List<Product> products = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {});
+
+        assertThat(products.size()).isEqualTo(8);
+    }
+
+    @Test
+    @DisplayName("브랜드 별 상품 조회 테스트 - 브랜드 또는 상품이 없는 경우")
+    void getProductsByBrandEmptyTest() throws Exception {
+        String brand = "AAAAAA";
+
+        MvcResult response = mockMvc.perform(get("/product/{brand}", brand)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        List<Product> products = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {});
+
+        assertThat(products.size()).isEqualTo(0);
+    }
 
     @Test
     @DisplayName("상품 등록 테스트")

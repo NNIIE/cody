@@ -4,7 +4,7 @@ CREATE TABLE product
 (
     id              BIGINT AUTO_INCREMENT PRIMARY KEY,
     brand           VARCHAR(20) NOT NULL,
-    category        VARCHAR(5)  NOT NULL,
+    category        VARCHAR(10)  NOT NULL,
     price           INT         NOT NULL,
     created_at      DATETIME    NOT NULL,
     updated_at      DATETIME    NOT NULL

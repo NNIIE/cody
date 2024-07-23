@@ -2,9 +2,11 @@ package com.cody.product.infra;
 
 import com.cody.common.exception.product.ProductException;
 import com.cody.common.exception.product.ProductExceptionCode;
+import com.cody.product.domain.ProductCategory;
 import com.cody.product.domain.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Repository
@@ -19,6 +22,10 @@ import java.util.Map;
 public class ProductRepository {
 
     private final JdbcTemplate jdbcTemplate;
+
+    public List<Product> getProductsByBrand(final String brand) {
+        return jdbcTemplate.query("select id, brand, category, price from product where brand = ?", productRowMapper(), brand);
+    }
 
     public void createProduct(final Product product) {
         SimpleJdbcInsert jdbcInsert = new SimpleJdbcInsert(jdbcTemplate);
@@ -38,7 +45,7 @@ public class ProductRepository {
     }
 
     public void updateProduct(final Long id, final BigDecimal updatePrice) {
-        int updateProductCount = jdbcTemplate.update("update product set price = ? where id = ?", updatePrice, id);
+        int updateProductCount = jdbcTemplate.update("update product set price = ?, updated_at = ? where id = ?", updatePrice, LocalDateTime.now(), id);
 
         if (updateProductCount == 0) {
             throw new ProductException(ProductExceptionCode.PRODUCT_NOT_FOUND);
@@ -51,6 +58,15 @@ public class ProductRepository {
         if (deleteProductCount == 0) {
             throw new ProductException(ProductExceptionCode.PRODUCT_NOT_FOUND);
         }
+    }
+
+    private RowMapper<Product> productRowMapper() {
+        return (rs, rowNum) -> Product.builder()
+                .id(rs.getLong("id"))
+                .brand(rs.getString("brand"))
+                .category(ProductCategory.fromName(rs.getString("category")))
+                .price(rs.getBigDecimal("price"))
+                .build();
     }
 
 }

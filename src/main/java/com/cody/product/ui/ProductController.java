@@ -12,6 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @Tag(name = "Product")
@@ -20,6 +22,13 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductMapper productMapper;
+
+    @GetMapping("/{brand}")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(summary = "브랜드 별 상품목록 조회")
+    public List<Product> getProductsByBrand(@PathVariable final String brand) {
+        return productService.getProductsByBrand(brand);
+    }
 
     @PostMapping("/")
     @ResponseStatus(HttpStatus.CREATED)

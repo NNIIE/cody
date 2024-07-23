@@ -9,21 +9,19 @@ import java.util.Arrays;
 
 public enum ProductCategory {
 
-    TOP("top", "1"),
-    OUTER("outer", "2"),
-    PANTS("pants", "3"),
-    SNEAKERS("sneakers", "4"),
-    BAG("bag", "5"),
-    HAT("hat", "6"),
-    SOCKS("socks", "7"),
-    ACCESSORY("accessory", "8");
+    TOP("top"),
+    OUTER("outer"),
+    PANTS("pants"),
+    SNEAKERS("sneakers"),
+    BAG("bag"),
+    HAT("hat"),
+    SOCKS("socks"),
+    ACCESSORY("accessory");
 
     private final String name;
-    private final String code;
 
-    ProductCategory(final String name, final String code) {
+    ProductCategory(final String name) {
         this.name = name;
-        this.code = code;
     }
 
     @JsonValue
@@ -31,9 +29,6 @@ public enum ProductCategory {
         return name;
     }
 
-    public String getCode() {
-        return code;
-    }
 
     @JsonCreator
     public static ProductCategory fromName(final String value) {

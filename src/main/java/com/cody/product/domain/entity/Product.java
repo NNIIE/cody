@@ -11,14 +11,16 @@ import java.math.BigDecimal;
 @ToString
 public class Product {
 
-    private final String brand;
-    private final String category;
-    private final BigDecimal price;
+    private Long id;
+    private String brand;
+    private String category;
+    private BigDecimal price;
 
     @Builder
-    public Product(final String brand, final ProductCategory category, final BigDecimal price) {
+    public Product(final Long id, final String brand, final ProductCategory category, final BigDecimal price) {
+        this.id = id;
         this.brand = brand;
-        this.category = category.getCode();
+        this.category = category.getName();
         this.price = price;
     }
 
