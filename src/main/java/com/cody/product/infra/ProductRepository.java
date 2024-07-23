@@ -1,5 +1,7 @@
 package com.cody.product.infra;
 
+import com.cody.common.exception.product.ProductException;
+import com.cody.common.exception.product.ProductExceptionCode;
 import com.cody.product.domain.entity.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -32,6 +34,14 @@ public class ProductRepository {
         parameters.put("updated_at", LocalDateTime.now());
 
         jdbcInsert.execute(new MapSqlParameterSource(parameters));
+    }
+
+    public void deleteProduct(final Long id) {
+        int deleteProductCount = jdbcTemplate.update("delete from product where id = ?", id);
+
+        if (deleteProductCount == 0) {
+            throw new ProductException(ProductExceptionCode.PRODUCT_NOT_FOUND);
+        }
     }
 
 }

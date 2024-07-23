@@ -28,4 +28,11 @@ public class ProductController {
         productService.createProduct(product);
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @Operation(summary = "상품 삭제")
+    public void deleteProduct(@PathVariable final Long id) {
+        productService.deleteProduct(id);
+    }
+
 }

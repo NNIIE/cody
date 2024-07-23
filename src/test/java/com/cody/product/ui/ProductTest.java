@@ -4,7 +4,6 @@ import com.cody.common.utils.JsonUtil;
 import com.cody.product.domain.ProductCategory;
 import com.cody.product.fixture.ProductFixture;
 import com.cody.product.ui.request.ProductCreateRequest;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -39,6 +38,28 @@ class ProductTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andExpect(status().isCreated())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("상품 삭제 테스트 - 성공 케이스")
+    void deleteProductSuccessTest() throws Exception {
+        Long id = 1L;
+
+        mockMvc.perform(delete("/product/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNoContent())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("상품 삭제 테스트 - 실패 케이스")
+    void deleteProductFailTest() throws Exception {
+        Long id = 1000L;
+
+        mockMvc.perform(delete("/product/{id}", id)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest())
                 .andDo(print());
     }
 
