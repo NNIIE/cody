@@ -1,6 +1,8 @@
 package com.cody.order.ui;
 
+import com.cody.order.ui.response.BestBrandResponse;
 import com.cody.order.ui.response.BestPriceResponse;
+import com.cody.order.ui.response.LowestProductsResponse;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +34,36 @@ class OrderTest {
     private ObjectMapper objectMapper;
 
     @Test
+    @DisplayName("카테고리 별 최저가 브랜드의 상품가격 및 총액 조회 테스트")
+    void getLowestProductByCategoryTest() throws Exception {
+        MvcResult response = mockMvc.perform(get("/order/lowest-product")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        LowestProductsResponse lowestProductsResponse = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {});
+
+        assertThat(lowestProductsResponse.getTotalPrice()).isEqualTo(new BigDecimal("34100"));
+        assertThat(lowestProductsResponse.getProducts().size()).isEqualTo(9);
+    }
+
+    @Test
+    @DisplayName("모든상품 최저가 브랜드 상품가격 및 총액 조회 테스트")
+    void getBestBrandTest() throws Exception {
+        MvcResult response = mockMvc.perform(get("/order/best-brand")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andDo(print())
+                .andReturn();
+
+        BestBrandResponse bestBrandResponse = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {});
+
+        assertThat(bestBrandResponse.getBrand()).isEqualTo("D");
+        assertThat(bestBrandResponse.getTotalPrice()).isEqualTo(new BigDecimal("36100"));
+    }
+
+    @Test
     @DisplayName("카테고리 별 최저가/최고가 조회 테스트")
     void getBestPriceToCategoryTest() throws Exception {
         String category = "TOP";
@@ -44,8 +76,8 @@ class OrderTest {
 
         BestPriceResponse bestPriceResponse = objectMapper.readValue(response.getResponse().getContentAsString(), new TypeReference<>() {});
 
-        assertThat(bestPriceResponse.lowestProduct().get(0).price()).isEqualTo(new BigDecimal("10000"));
-        assertThat(bestPriceResponse.highestProduct().get(0).price()).isEqualTo(new BigDecimal("11400"));
+        assertThat(bestPriceResponse.getLowestProduct().getPrice()).isEqualTo(new BigDecimal("10000"));
+        assertThat(bestPriceResponse.getHighestProduct().getPrice()).isEqualTo(new BigDecimal("11400"));
     }
 
 }

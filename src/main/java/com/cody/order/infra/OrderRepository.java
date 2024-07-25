@@ -1,8 +1,7 @@
 package com.cody.order.infra;
 
-import com.cody.common.struct.Product;
 import com.cody.common.struct.ProductCategory;
-import com.cody.order.ui.response.BestPriceProduct;
+import com.cody.order.domain.BestBrandProduct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -16,21 +15,15 @@ public class OrderRepository {
 
     private final JdbcTemplate jdbcTemplate;
 
-    public List<BestPriceProduct> getHighestProductToCategory(final ProductCategory category) {
-        return jdbcTemplate.query("select * from product where CATEGORY = ? order by price desc limit 1", bestPriceProductRowMapper(), category.getName());
+    public List<BestBrandProduct> getBestBrand(final String brand) {
+        return jdbcTemplate.query("select category, price from product where brand = ?", bestBrandRowMapper(), brand);
     }
 
-    public List<BestPriceProduct> getLowestProductToCategory(final ProductCategory category) {
-        return jdbcTemplate.query("select * from product where CATEGORY = ? order by price asc limit 1", bestPriceProductRowMapper(), category.getName());
-    }
-
-    private RowMapper<BestPriceProduct> bestPriceProductRowMapper() {
-        return (rs, rowNum) -> new BestPriceProduct(
-                rs.getString("brand"),
+    private RowMapper<BestBrandProduct> bestBrandRowMapper() {
+        return (rs, rowNum) -> new BestBrandProduct(
+                ProductCategory.fromName(rs.getString("category")),
                 rs.getBigDecimal("price")
         );
     }
-
-
 
 }
