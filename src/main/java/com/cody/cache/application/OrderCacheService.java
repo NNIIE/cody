@@ -32,6 +32,18 @@ public class OrderCacheService {
         codyApiCache.put(LOWEST_BRAND, lowestBrand);
     }
 
+    @PostConstruct
+    public void cacheLowestProductsByCategory() {
+        List<CategoryPriceProduct> categoryPriceProducts = orderCacheProviderService.getLowestProductsByCategory();
+        codyApiCache.put(LOWEST_PRODUCTS, categoryPriceProducts);
+    }
+
+    @PostConstruct
+    public void cacheHighestProductsByCategory() {
+        List<CategoryPriceProduct> highestProducts = orderCacheProviderService.getHighestProductsByCategory();
+        codyApiCache.put(HIGHEST_PRODUCTS, highestProducts);
+    }
+
     public LowestBrand getLowestBrand() {
         LowestBrand lowestBrand = codyApiCache.getObject(LOWEST_BRAND, LowestBrand.class);
 
@@ -42,12 +54,6 @@ public class OrderCacheService {
         return codyApiCache.getObject(LOWEST_BRAND, LowestBrand.class);
     }
 
-    @PostConstruct
-    public void cacheLowestProductsByCategory() {
-        List<CategoryPriceProduct> categoryPriceProducts = orderCacheProviderService.getLowestProductsByCategory();
-        codyApiCache.put(LOWEST_PRODUCTS, categoryPriceProducts);
-    }
-
     public List<CategoryPriceProduct> getLowestProducts() {
         List<CategoryPriceProduct> categoryPriceProducts = codyApiCache.getList(LOWEST_PRODUCTS, CategoryPriceProduct.class);
 
@@ -56,12 +62,6 @@ public class OrderCacheService {
         }
 
         return codyApiCache.getList(LOWEST_PRODUCTS, CategoryPriceProduct.class);
-    }
-
-    @PostConstruct
-    public void cacheHighestProductsByCategory() {
-        List<CategoryPriceProduct> highestProducts = orderCacheProviderService.getHighestProductsByCategory();
-        codyApiCache.put(HIGHEST_PRODUCTS, highestProducts);
     }
 
     public List<CategoryPriceProduct> getHighestProducts() {
