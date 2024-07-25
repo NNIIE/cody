@@ -1,4 +1,4 @@
-package com.cody.cache.application;
+package com.cody.cache.infra;
 
 import org.springframework.stereotype.Component;
 

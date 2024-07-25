@@ -1,6 +1,6 @@
 package com.cody.order.ui.response;
 
-import com.cody.cache.struct.CategoryPriceProduct;
+import com.cody.order.domain.CategoryPriceProduct;
 import com.cody.common.exception.server.ServerException;
 import com.cody.common.exception.server.ServerExceptionCode;
 import com.cody.common.struct.ProductCategory;

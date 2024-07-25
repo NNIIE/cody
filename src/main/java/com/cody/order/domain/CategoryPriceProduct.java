@@ -1,4 +1,4 @@
-package com.cody.cache.struct;
+package com.cody.order.domain;
 
 import com.cody.common.struct.ProductCategory;
 import lombok.Builder;

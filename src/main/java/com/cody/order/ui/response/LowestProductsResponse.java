@@ -1,6 +1,6 @@
 package com.cody.order.ui.response;
 
-import com.cody.cache.struct.CategoryPriceProduct;
+import com.cody.order.domain.CategoryPriceProduct;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

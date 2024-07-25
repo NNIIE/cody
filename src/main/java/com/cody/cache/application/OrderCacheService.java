@@ -1,8 +1,9 @@
 package com.cody.cache.application;
 
-import com.cody.cache.infra.CacheRepository;
+import com.cody.cache.infra.CodyApiCache;
+import com.cody.order.domain.CategoryPriceProduct;
 import com.cody.common.struct.LowestBrand;
-import com.cody.cache.struct.CategoryPriceProduct;
+import com.cody.order.application.OrderCacheProviderService;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -11,14 +12,14 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
-public class CacheService {
+public class OrderCacheService {
 
     /**
      * 관리자가 브랜드 및 상품을 추가/업데이트/삭제 하는 트래픽보다
      * 유저가 조회하는 트래픽이 월등할것 같아서 데이터를 캐싱하는 전략을 사용했습니다.
      */
 
-    private final CacheRepository cacheRepository;
+    private final OrderCacheProviderService orderCacheProviderService;
     private final CodyApiCache codyApiCache;
 
     private static final String LOWEST_BRAND = "lowestBrand";
@@ -27,7 +28,7 @@ public class CacheService {
 
     @PostConstruct
     public void cacheLowestBrand() {
-        final LowestBrand lowestBrand = cacheRepository.getBestBrand();
+        final LowestBrand lowestBrand = orderCacheProviderService.getLowestBrand();
         codyApiCache.put(LOWEST_BRAND, lowestBrand);
     }
 
@@ -43,7 +44,7 @@ public class CacheService {
 
     @PostConstruct
     public void cacheLowestProductsByCategory() {
-        List<CategoryPriceProduct> categoryPriceProducts = cacheRepository.getLowestProductsByCategory();
+        List<CategoryPriceProduct> categoryPriceProducts = orderCacheProviderService.getLowestProductsByCategory();
         codyApiCache.put(LOWEST_PRODUCTS, categoryPriceProducts);
     }
 
@@ -59,7 +60,7 @@ public class CacheService {
 
     @PostConstruct
     public void cacheHighestProductsByCategory() {
-        List<CategoryPriceProduct> highestProducts = cacheRepository.getHighestProductsByCategory();
+        List<CategoryPriceProduct> highestProducts = orderCacheProviderService.getHighestProductsByCategory();
         codyApiCache.put(HIGHEST_PRODUCTS, highestProducts);
     }
 
