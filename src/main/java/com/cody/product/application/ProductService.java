@@ -1,6 +1,6 @@
 package com.cody.product.application;
 
-import com.cody.product.domain.entity.Product;
+import com.cody.common.struct.Product;
 import com.cody.product.infra.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

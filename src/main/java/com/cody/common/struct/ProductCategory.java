@@ -1,22 +1,20 @@
-package com.cody.product.domain;
+package com.cody.common.struct;
 
 import com.cody.common.exception.request.RequestException;
 import com.cody.common.exception.request.RequestExceptionCode;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
 
 import java.util.Arrays;
 
 public enum ProductCategory {
 
-    TOP("top"),
-    OUTER("outer"),
-    PANTS("pants"),
-    SNEAKERS("sneakers"),
-    BAG("bag"),
-    HAT("hat"),
-    SOCKS("socks"),
-    ACCESSORY("accessory");
+    TOP("TOP"),
+    OUTER("OUTER"),
+    PANTS("PANTS"),
+    SNEAKERS("SNEAKERS"),
+    BAG("BAG"),
+    HAT("HAT"),
+    SOCKS("SOCKS"),
+    ACCESSORY("ACCESSORY");
 
     private final String name;
 
@@ -24,13 +22,10 @@ public enum ProductCategory {
         this.name = name;
     }
 
-    @JsonValue
     public String getName() {
         return name;
     }
 
-
-    @JsonCreator
     public static ProductCategory fromName(final String value) {
         return Arrays.stream(ProductCategory.values())
                 .filter(category -> category.name.equals(value))

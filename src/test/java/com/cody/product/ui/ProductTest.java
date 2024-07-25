@@ -1,14 +1,13 @@
 package com.cody.product.ui;
 
 import com.cody.common.utils.JsonUtil;
-import com.cody.product.domain.ProductCategory;
-import com.cody.product.domain.entity.Product;
+import com.cody.common.struct.ProductCategory;
+import com.cody.common.struct.Product;
 import com.cody.product.fixture.ProductFixture;
 import com.cody.product.ui.request.ProductCreateRequest;
 import com.cody.product.ui.request.ProductUpdateRequest;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ class ProductTest {
     void getProductsByBrandTest() throws Exception {
         String brand = "A";
 
-        MvcResult response = mockMvc.perform(get("/product/{brand}", brand)
+        MvcResult response = mockMvc.perform(get("/product/brand/{brand}", brand)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -59,7 +58,7 @@ class ProductTest {
     void getProductsByBrandEmptyTest() throws Exception {
         String brand = "AAAAAA";
 
-        MvcResult response = mockMvc.perform(get("/product/{brand}", brand)
+        MvcResult response = mockMvc.perform(get("/product/brand/{brand}", brand)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andDo(print())
@@ -76,7 +75,7 @@ class ProductTest {
         ProductCreateRequest productCreateRequest = ProductFixture.productCreateRequest("Z", ProductCategory.OUTER, BigDecimal.valueOf(10000));
         String request = JsonUtil.objectToJson(productCreateRequest);
 
-        mockMvc.perform(post("/product/")
+        mockMvc.perform(post("/product")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(request))
                 .andExpect(status().isCreated())

@@ -2,8 +2,8 @@ package com.cody.product.infra;
 
 import com.cody.common.exception.product.ProductException;
 import com.cody.common.exception.product.ProductExceptionCode;
-import com.cody.product.domain.ProductCategory;
-import com.cody.product.domain.entity.Product;
+import com.cody.common.struct.ProductCategory;
+import com.cody.common.struct.Product;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;

@@ -1,7 +1,6 @@
 package com.cody.product.fixture;
 
-import com.cody.product.domain.ProductCategory;
-import com.cody.product.domain.entity.Product;
+import com.cody.common.struct.ProductCategory;
 import com.cody.product.ui.request.ProductCreateRequest;
 import com.cody.product.ui.request.ProductUpdateRequest;
 

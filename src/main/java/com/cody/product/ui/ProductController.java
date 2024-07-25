@@ -1,7 +1,7 @@
 package com.cody.product.ui;
 
 import com.cody.product.application.ProductService;
-import com.cody.product.domain.entity.Product;
+import com.cody.common.struct.Product;
 import com.cody.product.infra.ProductMapper;
 import com.cody.product.ui.request.ProductCreateRequest;
 import com.cody.product.ui.request.ProductUpdateRequest;
@@ -23,14 +23,14 @@ public class ProductController {
     private final ProductService productService;
     private final ProductMapper productMapper;
 
-    @GetMapping("/{brand}")
+    @GetMapping("/brand/{brand}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(summary = "브랜드 별 상품목록 조회")
     public List<Product> getProductsByBrand(@PathVariable final String brand) {
         return productService.getProductsByBrand(brand);
     }
 
-    @PostMapping("/")
+    @PostMapping("")
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "상품 등록")
     public void createProduct(@RequestBody @Valid final ProductCreateRequest request) {

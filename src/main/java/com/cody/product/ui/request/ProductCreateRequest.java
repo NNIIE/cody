@@ -1,6 +1,6 @@
 package com.cody.product.ui.request;
 
-import com.cody.product.domain.ProductCategory;
+import com.cody.common.struct.ProductCategory;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;

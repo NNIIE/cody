@@ -7,7 +7,8 @@ import org.springframework.http.HttpStatus;
 public enum ServerExceptionCode {
 
     INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 1000, "Internal server error."),
-    JSON_PARSER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, 1001, "JSON parsing error");
+    SQL_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, 1001, "Internal server error."),
+    JSON_PARSER_EXCEPTION(HttpStatus.INTERNAL_SERVER_ERROR, 1002, "JSON parsing error");
 
     private final HttpStatus status;
     private final int code;
