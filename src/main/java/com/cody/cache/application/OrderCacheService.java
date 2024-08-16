@@ -14,11 +14,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderCacheService {
 
-    /**
-     * 관리자가 브랜드 및 상품을 추가/업데이트/삭제 하는 트래픽보다
-     * 유저가 조회하는 트래픽이 월등할것 같아서 데이터를 캐싱하는 전략을 사용했습니다.
-     */
-
     private final OrderCacheProviderService orderCacheProviderService;
     private final CodyApiCache codyApiCache;
 
